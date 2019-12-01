@@ -2,7 +2,7 @@ const pool = require('./dbconfig'); // Load the MySQL pool connection
 
 const router = app =>
 {
-    app.get('/', (request, response) =>
+    /*app.get('/', (request, response) =>
     {
         console.log(`URL GET: ${request.url}`);
         response.send(
@@ -32,18 +32,20 @@ const router = app =>
      
             response.send(result);
         });
-    });
+    });*/
 
-    app.get('/news', (request, response) => {
+    app.get('/news', (request, response) =>
+    {
         console.log(`URL GET: ${request.url}`);
 
         pool.query(
             'SELECT * FROM news',
             (error, result) =>
         {
-            if (error) throw error;
+            if (error)
+                response.status(400).send(error);//throw error;
      
-            response.send(result);
+            response.status(200).send(result);
         });
     });
 
@@ -53,7 +55,8 @@ const router = app =>
 
         pool.query(`INSERT INTO news SET ${request.body}`, (error, result) =>
         {
-            if (error) throw error;
+            if (error)
+                response.status(405).send(error);//throw error;
 
             response.status(201).send(`News added with ID: ${result.insertId}`);
         });
@@ -65,18 +68,20 @@ const router = app =>
 
         pool.query(`UPDATE news SET ${request.body} WHERE id = ${request.params.id}`, (error, result) =>
         {
-            if (error) throw error;
+            if (error)
+                response.status(400).send(error);
 
-            response.send(`News updated successfully.`);
+            response.status(202).send(`News updated successfully.`);
         });
     });
 
     app.delete('/news/:id', (request, response) => {    
         pool.query(`UPDATE news SET deleted=1 WHERE id = ${request.params.id}`, (error, result) =>
         {
-            if (error) throw error;
+            if (error)
+                response.status(400).send(error);
     
-            response.send('News deleted.');
+            response.status(200).send('News deleted.');
         });
     });
 }
