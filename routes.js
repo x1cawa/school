@@ -52,8 +52,15 @@ const router = app =>
     app.post('/news', (request, response) =>
     {
         console.log(`URL POST: ${request.url}`);
-
-        pool.query(`INSERT INTO news SET ${request.body}`, (error, result) =>
+		
+		let arr =
+		[
+			request.body.title,
+			request.body.text,
+			request.body.url_pic
+		];
+		
+        pool.query(`INSERT INTO news SET title=?, text=?, url_pic=?, id_author=${Number.parseInt(request.body.id_author)}, id_blog=${Number.parseInt(request.body.id_blog)};`, arr, (error, result) =>
         {
             if (error)
                 response.status(405).send(error);//throw error;
@@ -65,8 +72,15 @@ const router = app =>
     app.put('/news/:id', (request, response) =>
     {
         console.log(`URL PUT: ${request.url}`);
+		
+		let arr =
+		[
+			request.body.title,
+			request.body.text,
+			request.body.url_pic
+		];
 
-        pool.query(`UPDATE news SET ${request.body} WHERE id = ${request.params.id}`, (error, result) =>
+        pool.query(`UPDATE news SET title=?, text=?, url_pic=?, id_author=${Number.parseInt(request.body.id_author)}, id_blog=${Number.parseInt(request.body.id_blog)} WHERE id = ${request.params.id}`, arr, (error, result) =>
         {
             if (error)
                 response.status(400).send(error);
@@ -75,7 +89,8 @@ const router = app =>
         });
     });
 
-    app.delete('/news/:id', (request, response) => {    
+    app.delete('/news/:id', (request, response) =>
+	{    
         pool.query(`UPDATE news SET deleted=1 WHERE id = ${request.params.id}`, (error, result) =>
         {
             if (error)

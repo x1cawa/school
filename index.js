@@ -15,7 +15,7 @@ const server = app.listen(serverPort, (error) =>
 });
 
 // Use Node.js body parsing middleware
-app.use(bodyParser.text()); //bodyParser.json()
+app.use(bodyParser.json());//text //bodyParser.json()
 app.use(bodyParser.urlencoded(
 {
     extended: true,
