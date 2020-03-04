@@ -22,10 +22,10 @@ public class Main {
         {
             while(true)
             {
-                Integer n = Integer.parseInt(scanner.next());
+                Integer n = scanner.nextInt();
                 arr.add(n);
             }
-        } catch (NumberFormatException ex) {}
+        } catch (InputMismatchException ex) {}
 
         out.println("Array:");
         printList(arr);
