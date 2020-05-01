@@ -11,8 +11,8 @@ public class Matrix
     private int[][] matrix;
 
     public Matrix() {}
-    public Matrix(int size) { matrix = new int[size][size]; }
     public Matrix(Matrix other) { matrix = other.matrix; }
+    public Matrix(int[][] matrix) { this.matrix = matrix; }
 
     public Matrix add(Matrix other)
     {
@@ -55,6 +55,8 @@ public class Matrix
         for(int i = 0; i < matrix.length; i++)
             for (int j = 0; j < matrix.length; j++)
                 res[i][j] = multiply(this, other, i, j);
+
+        matrix = res;
         return this;
     }
 
